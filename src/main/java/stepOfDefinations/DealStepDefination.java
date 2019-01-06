@@ -1,19 +1,21 @@
-/*package stepOfDefinations;
+package stepOfDefinations;
+
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.interactions.ClickAction;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import junit.framework.Assert;
+import io.cucumber.datatable.DataTable;
 
-public class LoginStepDefination {
-	
+
+public class DealStepDefination {
 	WebDriver driver;
 	@Given ("^User is present on the login page$")
 	public void user_present_login_page()
@@ -24,7 +26,6 @@ public class LoginStepDefination {
 		driver.get("http://www.freecrm.com");
 	}
 	
-
 	@When("^title of login page is free crm$")
 	public void title_of_login_page() {
 		String title = driver.getTitle();
@@ -38,17 +39,18 @@ public class LoginStepDefination {
 		}
 	}
 	
-	//two type of data driver approach : with example and without example.
-	//below is the without example keyword
-	
-	@Then("^user enters \"(.*)\" and \"(.*)\"$")
-	public void user_enters_username_and_password(String username,String password)
+	@Then("^user enters username and password$")
+	public void user_enters_username_and_password(DataTable dt1)
 	{
-		driver.findElement(By.name("username")).sendKeys(username);
-		 driver.findElement(By.name("password")).sendKeys(password);
+		
+		 
+		 List<List<String>> list1 = dt1.asLists(String.class);
+		
+		
+		driver.findElement(By.name("username")).sendKeys(list1.get(0).get(0));
+		 driver.findElement(By.name("password")).sendKeys(list1.get(0).get(1));
+		 
 	}
-	
-	
 	@Then("^user clicks on login button$")
 	 public void user_clicks_on_login_button() {
 	 WebElement loginBtn = driver.findElement(By.xpath("//input[@type='submit']"));
@@ -70,28 +72,28 @@ if (title.equals("CRMPRO"))
 else {
 	System.out.println("title not matched");
 }
-
 }
-
-@Then("^user moves to new contact page$")
-public void user_moves_to_new_contact_page() {
+@Then("^user moves to new deal page$")
+public void user_moves_new_deal_page()
+{
 	driver.switchTo().frame("mainpanel");
 	Actions act = new Actions(driver);
-	act.moveToElement(driver.findElement(By.xpath("//a[contains(text(),'Contacts')]"))).build().perform();
-	driver.findElement(By.xpath("//a[contains(text(),'New Contact')]")).click();
+	act.moveToElement(driver.findElement(By.xpath("//a[contains(text(),'Deals')]"))).build().perform();
+	driver.findElement(By.xpath("//a[contains(text(),'New Deal')]")).click();
 	
-	
-   
 }
 
-@Then("^user enters contacts details \"(.*)\" and \"(.*)\" and \"(.*)\"$")
-public void user_enters_contacts_details(String firstname,String lastname,String position)
+@Then("^user enters deal details$")
+public void user_enters_deal_details(DataTable dt)
 {
-	driver.findElement(By.id("first_name")).sendKeys(firstname);
-	 driver.findElement(By.id("surname")).sendKeys(lastname);
-	 
-	 driver.findElement(By.name("client_lookup")).sendKeys(position);
-	 driver.findElement(By.xpath("//input[@type='submit'and @value='Save']")).click();
+
+	List<List<String>> list = dt.asLists(String.class);
+	driver.findElement(By.id("title")).sendKeys(list.get(0).get(0));
+	
+	 driver.findElement(By.id("title")).sendKeys(list.get(0).get(0));
+	 driver.findElement(By.id("amount")).sendKeys(list.get(0).get(1));
+	 driver.findElement(By.id("probability")).sendKeys(list.get(0).get(2));
+	 driver.findElement(By.id("commission")).sendKeys(list.get(0).get(3));
 }
 
 @Then("^close the browser$")
@@ -101,4 +103,5 @@ public void close_the_browser()
 }
 
 }
-*/
+
+
